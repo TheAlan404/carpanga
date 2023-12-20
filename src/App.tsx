@@ -48,6 +48,7 @@ const App = () => {
 	}
 
 	const playMove = (n: number) => {
+		if(gameState == "ended") return;
 		let otherSel = players[swap(turn)].selectedNumber;
 		if(otherSel === null) {
 			// first move
@@ -117,7 +118,7 @@ const App = () => {
 				<Text
 					fw="bold"
 					c={players[winningPlayer].color}
-				>{`${winningPlayer}. oyuncu kazandı!`}</Text>
+				>{`${winningPlayer+1}. oyuncu kazandı!`}</Text>
 				<Button
 					color="dark"
 					onClick={restart}
