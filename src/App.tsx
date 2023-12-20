@@ -1,10 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ActionIcon, Box, Button, Group, Paper, SimpleGrid, Stack, Text, Title, Tooltip } from "@mantine/core";
 import { PlayerColumn } from "./game/PlayerColumn";
 import { Board } from "./game/Board";
 import { useMobile, randomBoard, digits, findWinner } from "./util";
 import { useHotkeys } from "@mantine/hooks";
 import { IconExternalLink, IconReload, IconCrown } from "@tabler/icons-react";
+
+import winSfx from "./assets/win.mp3";
+import moveSfx from "./assets/play_move.wav";
+import capturedSfx from "./assets/captured.wav";
 
 export interface Player {
 	color: string,
@@ -34,11 +38,19 @@ const App = () => {
 	const [gameState, setGameState] = useState<"game" | "ended">("game");
 	const [winningPlayer, setWinningPlayer] = useState<0 | 1 | null>(null);
 
+	const winSfxRef = useRef(new Audio(winSfx));
+
 	useHotkeys(digits().map(d => (
 		[d.toString(), () => {
 			playMove(d);
 		}]
 	)))
+
+	useEffect(() => {
+		if(gameState == "ended") {
+			winSfxRef.current.play();
+		}
+	}, [gameState]);
 
 	const restart = () => {
 		setPlayers(createPlayers());
@@ -90,6 +102,15 @@ const App = () => {
 						}
 					)
 				));
+
+				if(
+					!ps.some(p => p.wins.includes(win))
+					&& players.some(p => p.wins.includes(win))
+				) {
+					new Audio(capturedSfx).play();
+				} else {
+					new Audio(moveSfx).play();
+				}
 
 				let winner = findWinner(board, players);
 
