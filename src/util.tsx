@@ -33,7 +33,7 @@ export const findWinner = (board: number[][], players: Player[]) => {
     let getOwner = (x: number, y: number): number | null => (
         players
         .map((p, i): [Player, number][] => [p, i])
-        .find(([p]) => (p as Player).wins.includes(board[x][y]))
+        .find(([p]) => board[x] && board[x][y] !== undefined && (p as Player).wins.includes(board[x][y]))
         || []
     )[1];
     
