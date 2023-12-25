@@ -37,14 +37,16 @@ export const findWinner = (board: number[][], players: Player[]) => {
         || []
     )[1];
     
-    // iterate over 3x3 square in middle
-    for(let ax = 0; ax < 3; ax++) {
-        for(let ay = 0; ay < 3; ay++) {
-            let t = (x, y) => [x+ax+1, y+ay+1];
+    // iterate 5x5
+    for(let ax = 0; ax < 5; ax++) {
+        for(let ay = 0; ay < 5; ay++) {
+            let t = (x, y) => [x+ax, y+ay];
             let all = (a, b, c) => {
                 return (
                     // base check for unclaimed squares
                     getOwner(...a) !== undefined
+                    && getOwner(...b) !== undefined
+                    && getOwner(...c) !== undefined
                     // check all eq
                     && getOwner(...a) == getOwner(...b)
                     && getOwner(...b) == getOwner(...c)
