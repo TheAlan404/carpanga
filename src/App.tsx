@@ -32,7 +32,7 @@ const swap = (n: number) => n === 0 ? 1 : 0;
 
 const App = () => {
 	const [allowRetake] = useState<boolean>(false);
-	const [turn, setTurn] = useState<0 | 1>(0);
+	const [turn, setTurn] = useState<0 | 1>(Math.round(Math.random()));
 	const [players, setPlayers] = useState<Player[]>(createPlayers());
 	const [board, setBoard] = useState<number[][]>(randomBoard());
 	const [gameState, setGameState] = useState<"game" | "ended">("game");
@@ -129,7 +129,7 @@ const App = () => {
 		ta="center"
 		fw="bold"
 		c={players[turn].color}
-	>{`${turn+1}. oyuncunun turu`}</Text>;
+	>{`${turn ? "Yeşil" : "Mavi"} oyuncunun turu`}</Text>;
 
 	if(winningPlayer !== null) {
 		label = (
@@ -139,7 +139,7 @@ const App = () => {
 				<Text
 					fw="bold"
 					c={players[winningPlayer].color}
-				>{`${winningPlayer+1}. oyuncu kazandı!`}</Text>
+				>{`${winningPlayer ? "Yeşil" : "Mavi"} oyuncu kazandı!`}</Text>
 				<Button
 					color="dark"
 					onClick={restart}
