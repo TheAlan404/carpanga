@@ -21,7 +21,10 @@ export interface GameInterface {
 	players: Player[],
 }
 
-const Game = React.createContext<GameInterface>();
+const Game = React.createContext<GameInterface>({
+	board: [],
+	players: [],
+});
 
 const createPlayers = () => [
 	{ color: "indigo.9", selectedNumber: null, wins: [] },
@@ -32,7 +35,7 @@ const swap = (n: number) => n === 0 ? 1 : 0;
 
 const App = () => {
 	const [allowRetake] = useState<boolean>(false);
-	const [turn, setTurn] = useState<0 | 1>(Math.round(Math.random()));
+	const [turn, setTurn] = useState<0 | 1>(Math.round(Math.random()) as (0 | 1));
 	const [players, setPlayers] = useState<Player[]>(createPlayers());
 	const [board, setBoard] = useState<number[][]>(randomBoard());
 	const [gameState, setGameState] = useState<"game" | "ended">("game");
@@ -77,6 +80,7 @@ const App = () => {
 				)))
 				return swap(t);
 			});
+			new Audio(moveSfx).play();
 			return;
 		}
 
@@ -166,7 +170,7 @@ const App = () => {
 						color="dark"
 						variant="subtle"
 						component="a"
-						href="https://thealan404.github.io/"
+						href="https://deniz.blue/"
 						target="_blank"
 						leftSection={<IconExternalLink />}
 					>

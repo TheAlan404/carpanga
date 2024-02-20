@@ -15,10 +15,10 @@ export const Node = ({
     variant,
     disabled,
 }: {
-    disabled: boolean,
-    color: string,
+    disabled?: boolean,
+    color?: string,
     number: number,
-    onClick: null | (() => void),
+    onClick?: (() => void),
     variant: "player" | "board",
 }) => {
     const isMobile = useMobile();
@@ -34,7 +34,7 @@ export const Node = ({
             className="hoverable"
             style={{
                 color: disabled ? "var(--mantine-color-dimmed)" : "var(--mantine-color-white)",
-                pointerEvents: disabled ? "none" : "",
+                pointerEvents: disabled ? "none" : undefined,
                 cursor: "pointer",
                 userSelect: "none",
             }}

@@ -29,28 +29,38 @@ export const randomBoard = () => {
         .filter((_, i) => i < 5);
 };
 
-export const findWinner = (board: number[][], players: Player[]) => {
-    let getOwner = (x: number, y: number): number | null => (
+export const findWinner = (board: number[][], players: Player[]): 0 | 1 | null => {
+    let getOwner = (
+        x: number,
+        y: number
+    ): 0 | 1 | null => (((
         players
-        .map((p, i): [Player, number][] => [p, i])
-        .find(([p]) => board[x] && board[x][y] !== undefined && (p as Player).wins.includes(board[x][y]))
-        || []
-    )[1];
+        .map((p, i): [Player, number] => ([p, i]))
+        .find(([p]) => board[x] && board[x][y] !== undefined && p.wins.includes(board[x][y]))
+        ?? []
+    )[1] ?? null) as (0 | 1 | null));
     
     // iterate 5x5
     for(let ax = 0; ax < 5; ax++) {
         for(let ay = 0; ay < 5; ay++) {
-            let t = (x, y) => [x+ax, y+ay];
-            let all = (a, b, c) => {
-                return (
+            let t = (x: number, y: number): [number, number] => [x+ax, y+ay];
+
+            let all = (a: [number, number], b: [number, number], c: [number, number]) => {
+                let aValue = getOwner(...a);
+                let bValue = getOwner(...b);
+                let cValue = getOwner(...c);
+                
+                let v = (
                     // base check for unclaimed squares
-                    getOwner(...a) !== undefined
-                    && getOwner(...b) !== undefined
-                    && getOwner(...c) !== undefined
+                    aValue !== null
+                    && bValue !== null
+                    && cValue !== null
                     // check all eq
-                    && getOwner(...a) == getOwner(...b)
-                    && getOwner(...b) == getOwner(...c)
+                    && aValue == bValue
+                    && bValue == cValue
                 );
+
+                return v;
             };
 
             // -

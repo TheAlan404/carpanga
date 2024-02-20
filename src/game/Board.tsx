@@ -10,7 +10,7 @@ export const Board = ({
 }: {
     board: number[][],
     players: Player[],
-    label: React.ReactNode,
+    label?: React.ReactNode,
 }) => {
     return (
         <Stack>
